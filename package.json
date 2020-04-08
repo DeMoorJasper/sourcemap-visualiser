@@ -1,0 +1,22 @@
+{
+  "name": "sourcemap-visualiser",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "parcel ./index.html",
+    "build": "parcel build ./index.html"
+  },
+  "dependencies": {
+    "classnames": "^2.2.6",
+    "nice-color-palettes": "^3.0.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "sourcemap-codec": "^1.4.8"
+  },
+  "devDependencies": {
+    "autoprefixer": "^9.7.6",
+    "parcel": "^2.0.0-nightly.203",
+    "tailwindcss": "^1.2.0"
+  }
+}
