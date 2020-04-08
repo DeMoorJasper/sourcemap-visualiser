@@ -6,6 +6,8 @@ import SourceSelector from "./source-selector";
 import MappingTree from "./mapping-tree";
 import SourcePreview from "./source-preview";
 
+// This is just a variable to be able to sort
+// it's not the best way but it was the easiest way I came up with in 5 secs
 const MAX_LINE_LENGTH = 10000;
 
 export type Props = {
