@@ -18,11 +18,16 @@ export default function SourceMap(props: Props) {
     [sourcemap.mappings]
   );
 
+  let filteredMappings = React.useMemo(
+    () => decodedMappings.filter((m) => m.sourceIndex === selectedSourceIndex),
+    [selectedSourceIndex]
+  );
+
   let selectedSource = sourcemap.sources[selectedSourceIndex];
 
   return (
-    <div className="h-full flex">
-      <div className="h-full w-1/6">
+    <div className="h-screen flex">
+      <div className="w-1/6">
         <SourceSelector
           selectedSource={selectedSourceIndex}
           onSelect={setSelectedSourceIndex}
@@ -31,7 +36,7 @@ export default function SourceMap(props: Props) {
       </div>
       <div className="w-4/6 overflow-y-auto">
         {selectedSource.content ? (
-          <SourcePreview source={selectedSource} />
+          <SourcePreview source={selectedSource} mappings={filteredMappings} />
         ) : (
           <div className="p-2">
             No source content found for {selectedSource.name}
@@ -39,10 +44,7 @@ export default function SourceMap(props: Props) {
         )}
       </div>
       <div className="w-1/6">
-        <MappingTree
-          mappings={decodedMappings}
-          selectedSourceIndex={selectedSourceIndex}
-        />
+        <MappingTree mappings={filteredMappings} />
       </div>
     </div>
   );

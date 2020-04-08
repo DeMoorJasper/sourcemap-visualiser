@@ -14,9 +14,9 @@ export default function SourceSelector(props: Props) {
   let { sources, selectedSource, onSelect } = props;
 
   return (
-    <div className="h-full">
-      <div className="font-medium text-white p-2 bg-gray-600">File Tree</div>
-      <div className="h-full overflow-y-auto bg-gray-800">
+    <div className="h-full bg-gray-800 overflow-y-auto">
+      <div className="font-medium text-white p-2 bg-gray-600">Sources</div>
+      <div className="overflow-y-auto">
         {sources.map((s, i) => {
           let shortSourceName =
             path.basename(path.dirname(s.name)) + "/" + path.basename(s.name);
