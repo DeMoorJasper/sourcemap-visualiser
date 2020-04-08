@@ -5,31 +5,11 @@ import colors from "nice-color-palettes/1000";
 
 import { SourceType } from "../types";
 import { DecodedMapping } from "../utils/decode-map";
+import { invertColor } from "../utils/color";
 
 export type Props = {
   source: SourceType;
   mappings: Array<DecodedMapping>;
-};
-
-const invertColor = (hex) => {
-  if (hex.indexOf("#") === 0) {
-    hex = hex.slice(1);
-  }
-
-  // convert 3-digit hex to 6-digits.
-  if (hex.length === 3) {
-    hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
-  }
-
-  if (hex.length !== 6) {
-    throw new Error("Invalid HEX color.");
-  }
-
-  var r = parseInt(hex.slice(0, 2), 16),
-    g = parseInt(hex.slice(2, 4), 16),
-    b = parseInt(hex.slice(4, 6), 16);
-
-  return r * 0.299 + g * 0.587 + b * 0.114 > 186 ? "#000000" : "#FFFFFF";
 };
 
 export default function SourcePreview(props: Props) {
@@ -72,18 +52,20 @@ export default function SourcePreview(props: Props) {
           value: "",
           mapping: currMapping,
         };
+      }
 
-        let nextMapping = mappings[i];
-        while (
-          nextMapping.sourceLine === currLine &&
-          nextMapping.sourceColumn === currColumn
-        ) {
-          if (i < mappings.length - 1) {
-            i++;
-            nextMapping = mappings[i];
-          } else {
-            break;
-          }
+      while (
+        currMapping.sourceLine < currLine ||
+        (currMapping.sourceLine === currLine &&
+          currMapping.sourceColumn < currColumn) ||
+        (currMapping.sourceLine === currLine &&
+          currMapping.sourceColumn === currColumn)
+      ) {
+        if (i < mappings.length - 1) {
+          i++;
+          currMapping = mappings[i];
+        } else {
+          break;
         }
       }
 
