@@ -55,18 +55,15 @@ export default function SourcePreview(props: Props) {
       }
 
       while (
-        currMapping.sourceLine < currLine ||
-        (currMapping.sourceLine === currLine &&
-          currMapping.sourceColumn < currColumn) ||
-        (currMapping.sourceLine === currLine &&
-          currMapping.sourceColumn === currColumn)
+        i < mappings.length - 1 &&
+        (currMapping.sourceLine < currLine ||
+          (currMapping.sourceLine === currLine &&
+            currMapping.sourceColumn < currColumn) ||
+          (currMapping.sourceLine === currLine &&
+            currMapping.sourceColumn === currColumn))
       ) {
-        if (i < mappings.length - 1) {
-          i++;
-          currMapping = mappings[i];
-        } else {
-          break;
-        }
+        i++;
+        currMapping = mappings[i];
       }
 
       currValue.value += char;
