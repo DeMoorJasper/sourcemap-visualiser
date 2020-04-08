@@ -29,8 +29,8 @@ export default function SourceMap(props: Props) {
           return m.sourceIndex === selectedSourceIndex;
         })
         .sort((a, b) => {
-          let aValue = a.sourceLine * MAX_LINE_LENGTH + a.sourceColumn;
-          let bValue = b.sourceLine * MAX_LINE_LENGTH + b.sourceColumn;
+          let aValue = a.sourceLine != null ? a.sourceLine * MAX_LINE_LENGTH + a.sourceColumn : Number.MAX_VALUE;
+          let bValue = b.sourceLine != null ? b.sourceLine * MAX_LINE_LENGTH + b.sourceColumn : Number.MAX_VALUE;
           return aValue - bValue;
         }),
     [selectedSourceIndex]

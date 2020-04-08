@@ -78,8 +78,12 @@ export default function SourcePreview(props: Props) {
           nextMapping.sourceLine === currLine &&
           nextMapping.sourceColumn === currColumn
         ) {
-          i++;
-          nextMapping = mappings[i];
+          if (i < mappings.length - 1) {
+            i++;
+            nextMapping = mappings[i];
+          } else {
+            break;
+          }
         }
       }
 
