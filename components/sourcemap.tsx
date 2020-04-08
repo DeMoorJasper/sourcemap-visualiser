@@ -6,6 +6,8 @@ import SourceSelector from "./source-selector";
 import MappingTree from "./mapping-tree";
 import SourcePreview from "./source-preview";
 
+const MAX_LINE_LENGTH = 10000;
+
 export type Props = {
   sourcemap: SourceMapType;
 };
@@ -19,14 +21,23 @@ export default function SourceMap(props: Props) {
   );
 
   let filteredMappings = React.useMemo(
-    () => decodedMappings.filter((m) => m.sourceIndex === selectedSourceIndex),
+    () =>
+      decodedMappings
+        .filter((m) => {
+          return m.sourceIndex === selectedSourceIndex;
+        })
+        .sort((a, b) => {
+          let aValue = a.sourceLine * MAX_LINE_LENGTH + a.sourceColumn;
+          let bValue = b.sourceLine * MAX_LINE_LENGTH + b.sourceColumn;
+          return aValue - bValue;
+        }),
     [selectedSourceIndex]
   );
 
   let selectedSource = sourcemap.sources[selectedSourceIndex];
 
   return (
-    <div className="h-screen flex">
+    <div className="h-full flex">
       <div className="w-1/6">
         <SourceSelector
           selectedSource={selectedSourceIndex}
