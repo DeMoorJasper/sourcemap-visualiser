@@ -10,7 +10,7 @@ export default function SourcePreview(props: Props) {
   let { source } = props;
 
   let lines = source.content.split("\n");
-  let lineNumberWidth = lines.length.toString(10).length;
+  let lineNumberWidth = lines.length.toString(10).length + 1;
   return (
     <div className="w-full h-full flex flex-col">
       {lines.map((line, i) => {
@@ -22,7 +22,7 @@ export default function SourcePreview(props: Props) {
             >
               {i}
             </div>
-            <div className="flex items-center px-4">{line}</div>
+            <div className="flex items-center px-4 whitespace-pre">{line}</div>
           </div>
         );
       })}
