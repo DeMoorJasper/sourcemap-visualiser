@@ -5,13 +5,15 @@
   "private": true,
   "scripts": {
     "start": "parcel ./index.html",
-    "build": "parcel build ./index.html --no-scope-hoist"
+    "build": "parcel build ./index.html"
   },
   "dependencies": {
     "classnames": "^2.2.6",
+    "core-js": "^3.6.4",
     "nice-color-palettes": "^3.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "regenerator-runtime": "^0.13.5",
     "sourcemap-codec": "^1.4.8"
   },
   "devDependencies": {
