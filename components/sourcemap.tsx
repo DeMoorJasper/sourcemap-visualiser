@@ -17,6 +17,8 @@ export type Props = {
 export default function SourceMap(props: Props) {
   let { sourcemap } = props;
   let [selectedSourceIndex, setSelectedSourceIndex] = React.useState(0);
+  let [hoveredMapping, setHoveredMapping] = React.useState(-1);
+  let [selectedMapping, setSelectedMapping] = React.useState(-1);
   let decodedMappings = React.useMemo(
     () => decodeMap(sourcemap.mappings, sourcemap.names),
     [sourcemap.mappings]
@@ -29,8 +31,14 @@ export default function SourceMap(props: Props) {
           return m.sourceIndex === selectedSourceIndex;
         })
         .sort((a, b) => {
-          let aValue = a.sourceLine != null ? a.sourceLine * MAX_LINE_LENGTH + a.sourceColumn : Number.MAX_VALUE;
-          let bValue = b.sourceLine != null ? b.sourceLine * MAX_LINE_LENGTH + b.sourceColumn : Number.MAX_VALUE;
+          let aValue =
+            a.sourceLine != null
+              ? a.sourceLine * MAX_LINE_LENGTH + a.sourceColumn
+              : Number.MAX_VALUE;
+          let bValue =
+            b.sourceLine != null
+              ? b.sourceLine * MAX_LINE_LENGTH + b.sourceColumn
+              : Number.MAX_VALUE;
           return aValue - bValue;
         }),
     [selectedSourceIndex]
@@ -49,7 +57,14 @@ export default function SourceMap(props: Props) {
       </div>
       <div className="w-4/6 overflow-y-auto">
         {selectedSource.content ? (
-          <SourcePreview source={selectedSource} mappings={filteredMappings} />
+          <SourcePreview
+            source={selectedSource}
+            mappings={filteredMappings}
+            hoveredMapping={hoveredMapping}
+            onHoverMapping={setHoveredMapping}
+            selectedMapping={selectedMapping}
+            onSelectMapping={setSelectedMapping}
+          />
         ) : (
           <div className="p-2">
             No source content found for {selectedSource.name}
@@ -57,7 +72,13 @@ export default function SourceMap(props: Props) {
         )}
       </div>
       <div className="w-1/6">
-        <MappingTree mappings={filteredMappings} />
+        <MappingTree
+          mappings={filteredMappings}
+          hoveredMapping={hoveredMapping}
+          onHoverMapping={setHoveredMapping}
+          selectedMapping={selectedMapping}
+          onSelectMapping={setSelectedMapping}
+        />
       </div>
     </div>
   );

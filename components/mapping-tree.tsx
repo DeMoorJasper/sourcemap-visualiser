@@ -1,13 +1,24 @@
 import React from "react";
+import classNames from "classnames";
 
 import { DecodedMapping } from "../utils/decode-map";
 
 export type Props = {
   mappings: Array<DecodedMapping>;
+  hoveredMapping: number;
+  onHoverMapping: (mappingIndex: number) => any;
+  selectedMapping: number;
+  onSelectMapping: (mappingIndex: number) => any;
 };
 
 export default function MappingTree(props: Props) {
-  let { mappings } = props;
+  let {
+    mappings,
+    hoveredMapping,
+    onHoverMapping,
+    selectedMapping,
+    onSelectMapping,
+  } = props;
 
   return (
     <div className="h-full bg-gray-100 overflow-y-auto">
@@ -16,8 +27,17 @@ export default function MappingTree(props: Props) {
         {mappings.map((mapping, i) => {
           return (
             <div
-              className="px-2 font-medium text-gray-700 whitespace-no-wrap"
+              className={classNames(
+                "px-2 font-medium text-gray-700 whitespace-no-wrap cursor-pointer",
+                {
+                  underline: hoveredMapping === i,
+                  "bg-blue-200": selectedMapping === i,
+                }
+              )}
               key={i}
+              onMouseEnter={() => onHoverMapping(i)}
+              onMouseLeave={() => onHoverMapping(-1)}
+              onClick={() => onSelectMapping(i)}
             >
               <span>
                 {mapping.sourceLine}:{mapping.sourceColumn}

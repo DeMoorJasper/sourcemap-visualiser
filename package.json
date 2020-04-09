@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "classnames": "^2.2.6",
+    "color": "^3.1.2",
     "core-js": "^3.6.4",
     "nice-color-palettes": "^3.0.0",
     "react": "^16.13.1",

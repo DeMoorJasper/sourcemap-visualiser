@@ -2,6 +2,7 @@ import React from "react";
 import classNames from "classnames";
 // @ts-ignore
 import colors from "nice-color-palettes/1000";
+import color from "color";
 
 import { SourceType } from "../types";
 import { DecodedMapping } from "../utils/decode-map";
@@ -10,10 +11,21 @@ import { invertColor } from "../utils/color";
 export type Props = {
   source: SourceType;
   mappings: Array<DecodedMapping>;
+  hoveredMapping: number;
+  onHoverMapping: (mappingIndex: number) => any;
+  selectedMapping: number;
+  onSelectMapping: (mappingIndex: number) => any;
 };
 
 export default function SourcePreview(props: Props) {
-  let { source, mappings } = props;
+  let {
+    source,
+    mappings,
+    hoveredMapping,
+    onHoverMapping,
+    selectedMapping,
+    onSelectMapping,
+  } = props;
 
   let renderableMappings = React.useMemo(() => {
     let result = [[]];
@@ -21,6 +33,7 @@ export default function SourcePreview(props: Props) {
     let currValue = {
       value: "",
       mapping: null,
+      mappingIndex: -1,
     };
     let i = 0;
     for (let char of source.content) {
@@ -31,6 +44,7 @@ export default function SourcePreview(props: Props) {
           currValue = {
             value: "",
             mapping: null,
+            mappingIndex: -1,
           };
         }
 
@@ -51,6 +65,7 @@ export default function SourcePreview(props: Props) {
         currValue = {
           value: "",
           mapping: currMapping,
+          mappingIndex: i,
         };
       }
 
@@ -95,6 +110,18 @@ export default function SourcePreview(props: Props) {
                   style.backgroundColor =
                     colors[lastMappingColor % 5000][lastMappingColor % 5];
                   style.color = invertColor(style.backgroundColor);
+
+                  if (map.mappingIndex > -1) {
+                    if (selectedMapping === map.mappingIndex) {
+                      style.backgroundColor = "#000000";
+                      style.color = "#ffffff";
+                    } else if (hoveredMapping === map.mappingIndex) {
+                      style.backgroundColor = color(
+                        style.backgroundColor
+                      ).darken(0.25);
+                    }
+                  }
+
                   lastMappingColor++;
                 }
 
@@ -106,6 +133,17 @@ export default function SourcePreview(props: Props) {
                       "text-gray-600": !map.mapping,
                     })}
                     style={style}
+                    onMouseEnter={() => {
+                      if (map.mappingIndex > -1) {
+                        onHoverMapping(map.mappingIndex);
+                      }
+                    }}
+                    onMouseLeave={() => onHoverMapping(-1)}
+                    onClick={() => {
+                      if (map.mappingIndex > -1) {
+                        onSelectMapping(map.mappingIndex);
+                      }
+                    }}
                   >
                     {map.value}
                   </span>
