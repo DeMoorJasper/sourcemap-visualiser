@@ -15,6 +15,7 @@ export type Props = {
   onHoverMapping: (mappingIndex: number) => any;
   selectedMapping: number;
   onSelectMapping: (mappingIndex: number) => any;
+  generated: string;
 };
 
 export default function SourcePreview(props: Props) {
@@ -25,6 +26,7 @@ export default function SourcePreview(props: Props) {
     onHoverMapping,
     selectedMapping,
     onSelectMapping,
+    generated,
   } = props;
 
   let renderableMappings = React.useMemo(() => {
@@ -95,8 +97,25 @@ export default function SourcePreview(props: Props) {
     }
 
     let m = mappings[selectedMapping];
+    let nextMapping = mappings[selectedMapping + 1];
+    let parts = ["", "", ""];
+    let lines = generated.split("\n");
+    let currChar = 0;
+    for (let c of lines[m.generatedLine]) {
+      if (currChar < m.generatedColumn) {
+        parts[0] += c;
+      } else if (nextMapping && currChar > nextMapping.generatedColumn) {
+        parts[2] += c;
+      } else {
+        parts[1] += c;
+      }
+
+      currChar++;
+    }
+
     return {
       line: m.originalLine,
+      parts: [parts[0].slice(-20), parts[1], parts[2].slice(0, 20)],
     };
   }, [selectedMapping]);
 
@@ -165,7 +184,15 @@ export default function SourcePreview(props: Props) {
             </div>
             {generatedFragment && generatedFragment.line === i && (
               <div className="p-2">
-                Here comes a highlight of generated code
+                <span className="text-gray-500">
+                  {generatedFragment.parts[0]}
+                </span>
+                <span className="bg-black text-white">
+                  {generatedFragment.parts[1] || '[NOT FOUND]'}
+                </span>
+                <span className="text-gray-500">
+                  {generatedFragment.parts[2]}
+                </span>
               </div>
             )}
           </React.Fragment>

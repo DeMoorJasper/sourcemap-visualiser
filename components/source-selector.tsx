@@ -32,6 +32,7 @@ export default function SourceSelector(props: Props) {
               onClick={() => {
                 onSelect(i);
               }}
+              key={i}
             >
               {shortSourceName}
             </div>

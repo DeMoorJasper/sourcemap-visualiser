@@ -44,6 +44,11 @@ export default function SourceMap(props: Props) {
     [selectedSourceIndex]
   );
 
+  React.useEffect(() => {
+    setSelectedMapping(-1);
+    setHoveredMapping(-1);
+  }, [selectedSourceIndex]);
+
   let selectedSource = sourcemap.sources[selectedSourceIndex];
 
   return (
@@ -64,6 +69,7 @@ export default function SourceMap(props: Props) {
             onHoverMapping={setHoveredMapping}
             selectedMapping={selectedMapping}
             onSelectMapping={setSelectedMapping}
+            generated={sourcemap.content}
           />
         ) : (
           <div className="p-2">
