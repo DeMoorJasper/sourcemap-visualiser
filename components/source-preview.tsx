@@ -55,8 +55,8 @@ export default function SourcePreview(props: Props) {
 
       let currMapping = mappings[i];
       if (
-        currMapping.sourceLine === currLine &&
-        currMapping.sourceColumn === currColumn
+        currMapping.originalLine === currLine &&
+        currMapping.originalColumn === currColumn
       ) {
         if (currValue.value) {
           result[currLine].push(currValue);
@@ -71,11 +71,11 @@ export default function SourcePreview(props: Props) {
 
       while (
         i < mappings.length - 1 &&
-        (currMapping.sourceLine < currLine ||
-          (currMapping.sourceLine === currLine &&
-            currMapping.sourceColumn < currColumn) ||
-          (currMapping.sourceLine === currLine &&
-            currMapping.sourceColumn === currColumn))
+        (currMapping.originalLine < currLine ||
+          (currMapping.originalLine === currLine &&
+            currMapping.originalColumn < currColumn) ||
+          (currMapping.originalLine === currLine &&
+            currMapping.originalColumn === currColumn))
       ) {
         i++;
         currMapping = mappings[i];
@@ -89,6 +89,17 @@ export default function SourcePreview(props: Props) {
     return result;
   }, [source.name]);
 
+  let generatedFragment = React.useMemo(() => {
+    if (selectedMapping < 0) {
+      return null;
+    }
+
+    let m = mappings[selectedMapping];
+    return {
+      line: m.originalLine,
+    };
+  }, [selectedMapping]);
+
   let lines = source.content.split("\n");
   let lineNumberWidth = lines.length.toString(10).length + 1;
   let lastMappingColor = 0;
@@ -96,61 +107,68 @@ export default function SourcePreview(props: Props) {
     <div className="w-full h-full flex flex-col">
       {renderableMappings.map((m, i) => {
         return (
-          <div className="flex flex-row" key={`line-${i}`}>
-            <div
-              className="text-right px-2 bg-gray-200"
-              style={{ width: `${lineNumberWidth}rem` }}
-            >
-              {i}
-            </div>
-            <div className="px-4 whitespace-pre">
-              {m.map((map, x) => {
-                let style: any = {};
-                if (map.mapping) {
-                  style.backgroundColor =
-                    colors[lastMappingColor % 5000][lastMappingColor % 5];
-                  style.color = invertColor(style.backgroundColor);
+          <React.Fragment key={`line-${i}`}>
+            <div className="flex flex-row">
+              <div
+                className="text-right px-2 bg-gray-200"
+                style={{ width: `${lineNumberWidth}rem` }}
+              >
+                {i}
+              </div>
+              <div className="px-4 whitespace-pre">
+                {m.map((map, x) => {
+                  let style: any = {};
+                  if (map.mapping) {
+                    style.backgroundColor =
+                      colors[lastMappingColor % 5000][lastMappingColor % 5];
+                    style.color = invertColor(style.backgroundColor);
 
-                  if (map.mappingIndex > -1) {
-                    if (selectedMapping === map.mappingIndex) {
-                      style.backgroundColor = "#000000";
-                      style.color = "#ffffff";
-                    } else if (hoveredMapping === map.mappingIndex) {
-                      style.backgroundColor = color(
-                        style.backgroundColor
-                      ).darken(0.25);
+                    if (map.mappingIndex > -1) {
+                      if (selectedMapping === map.mappingIndex) {
+                        style.backgroundColor = "#000000";
+                        style.color = "#ffffff";
+                      } else if (hoveredMapping === map.mappingIndex) {
+                        style.backgroundColor = color(
+                          style.backgroundColor
+                        ).darken(0.25);
+                      }
                     }
+
+                    lastMappingColor++;
                   }
 
-                  lastMappingColor++;
-                }
-
-                return (
-                  <span
-                    key={`line-${i}-mapping-${x}`}
-                    className={classNames("rounded", {
-                      "cursor-pointer": !!map.mapping,
-                      "text-gray-600": !map.mapping,
-                    })}
-                    style={style}
-                    onMouseEnter={() => {
-                      if (map.mappingIndex > -1) {
-                        onHoverMapping(map.mappingIndex);
-                      }
-                    }}
-                    onMouseLeave={() => onHoverMapping(-1)}
-                    onClick={() => {
-                      if (map.mappingIndex > -1) {
-                        onSelectMapping(map.mappingIndex);
-                      }
-                    }}
-                  >
-                    {map.value}
-                  </span>
-                );
-              })}
+                  return (
+                    <span
+                      key={`line-${i}-mapping-${x}`}
+                      className={classNames("rounded", {
+                        "cursor-pointer": !!map.mapping,
+                        "text-gray-600": !map.mapping,
+                      })}
+                      style={style}
+                      onMouseEnter={() => {
+                        if (map.mappingIndex > -1) {
+                          onHoverMapping(map.mappingIndex);
+                        }
+                      }}
+                      onMouseLeave={() => onHoverMapping(-1)}
+                      onClick={() => {
+                        if (map.mappingIndex > -1) {
+                          onSelectMapping(map.mappingIndex);
+                        }
+                      }}
+                    >
+                      {map.value}
+                    </span>
+                  );
+                })}
+              </div>
             </div>
-          </div>
+            {generatedFragment && generatedFragment.line === i && (
+              <div className="p-2">
+                Here comes a highlight of generated code
+              </div>
+            )}
+          </React.Fragment>
         );
       })}
       <div className="flex flex-row h-full">

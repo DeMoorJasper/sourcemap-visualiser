@@ -3,8 +3,8 @@ import { decode } from "sourcemap-codec";
 export type DecodedMapping = {
   generatedLine: number;
   generatedColumn: number;
-  sourceLine: number;
-  sourceColumn: number;
+  originalLine: number;
+  originalColumn: number;
   sourceIndex: number;
   name?: string;
 };
@@ -25,8 +25,8 @@ export function decodeMap(
       result.push({
         generatedLine: currentLine,
         generatedColumn: mapping[0],
-        sourceLine: hasSource ? mapping[2] : -1,
-        sourceColumn: hasSource ? mapping[3] : -1,
+        originalLine: hasSource ? mapping[2] : -1,
+        originalColumn: hasSource ? mapping[3] : -1,
         sourceIndex: hasSource ? mapping[1] : -1,
         name: hasName ? names[mapping[4]] : null,
       });

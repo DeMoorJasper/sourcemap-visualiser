@@ -40,7 +40,7 @@ export default function MappingTree(props: Props) {
               onClick={() => onSelectMapping(i)}
             >
               <span>
-                {mapping.sourceLine}:{mapping.sourceColumn}
+                {mapping.originalLine}:{mapping.originalColumn}
               </span>
               <span className="mx-1">-</span>
               <span>
