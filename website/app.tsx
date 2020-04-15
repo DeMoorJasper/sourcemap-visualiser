@@ -1,14 +1,14 @@
 import React from "react";
 
 import Dropzone from "./dropzone";
-import { SourceMapType } from "../types";
-import SourceMap from "./sourcemap";
+import { SourceMapType } from "~/types";
+import SourceMap from "~/components/sourcemap";
+import Visualizer from "~/components/visualizer";
 
 export default function App() {
   let [sourcemapContent, setSourcemapContent] = React.useState<
     Array<SourceMapType>
   >([]);
-  let [selectedSourceMapIndex, setSelectedSourceMapIndex] = React.useState(0);
 
   const handleSourceMapUpload = async (file: File) => {
     try {
@@ -26,29 +26,7 @@ export default function App() {
   };
 
   if (sourcemapContent.length) {
-    let selectedSourceMap = sourcemapContent[selectedSourceMapIndex];
-
-    return (
-      <div className="h-screen">
-        <div className="bg-gray-700 p-2 flex">
-          <div className="text-white mr-4">Select Bundle</div>
-          <select
-            onChange={(e) => {
-              setSelectedSourceMapIndex(parseInt(e.target.value, 10));
-            }}
-          >
-            {sourcemapContent.map((v, i) => {
-              return (
-                <option value={i} key={v.name}>
-                  {v.name}
-                </option>
-              );
-            })}
-          </select>
-        </div>
-        <SourceMap sourcemap={selectedSourceMap} />
-      </div>
-    );
+    return <Visualizer sourcemapContent={sourcemapContent} />;
   } else {
     return (
       <div className="max-w-xl mx-auto p-16">

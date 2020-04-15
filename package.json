@@ -2,24 +2,37 @@
   "name": "sourcemap-visualiser",
   "version": "1.0.0",
   "license": "MIT",
-  "private": true,
+  "module": "lib/index.js",
+  "style": "lib/index.css",
+  "app": "dist/index.html",
   "scripts": {
-    "start": "parcel ./index.html",
-    "build": "parcel build ./index.html"
+    "start": "parcel website/index.html",
+    "build": "parcel build website/index.html --target app",
+    "build-lib": "parcel build components/visualizer.tsx --target module && parcel build style.css --target style "
   },
+  "targets": {
+    "app": {},
+    "style": {}
+  },
+  "files": [
+    "lib"
+  ],
   "dependencies": {
     "classnames": "^2.2.6",
     "color": "^3.1.2",
-    "core-js": "^3.6.4",
     "nice-color-palettes": "^3.0.0",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "regenerator-runtime": "^0.13.5",
     "sourcemap-codec": "^1.4.8"
+  },
+  "peerDependencies": {
+    "react": "^16.13.1"
   },
   "devDependencies": {
     "autoprefixer": "^9.7.6",
-    "parcel": "^2.0.0-nightly.203",
+    "core-js": "^3.6.4",
+    "parcel": "^2.0.0-nightly.217",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "regenerator-runtime": "^0.13.5",
     "tailwindcss": "^1.2.0"
   }
 }
