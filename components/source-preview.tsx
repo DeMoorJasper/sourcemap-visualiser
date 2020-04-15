@@ -123,7 +123,7 @@ export default function SourcePreview(props: Props) {
   let lineNumberWidth = lines.length.toString(10).length + 1;
   let lastMappingColor = 0;
   return (
-    <div className="w-full h-full flex flex-col">
+    <div className="w-full h-full flex flex-col font-mono text-sm">
       {renderableMappings.map((m, i) => {
         return (
           <React.Fragment key={`line-${i}`}>
