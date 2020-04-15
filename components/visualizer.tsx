@@ -13,7 +13,7 @@ export default function Visualizer({ sourcemapContent }: Props) {
     let selectedSourceMap = sourcemapContent[selectedSourceMapIndex];
 
     return (
-      <div id="sourcemap-visualizer" className="h-screen font-sans leading-normal">
+      <div id="sourcemap-visualizer" className="font-sans leading-normal h-full flex flex-col">
         <div className="bg-gray-700 p-2 flex">
           <div className="text-white mr-4">Select Bundle</div>
           <select
