@@ -1,9 +1,9 @@
 import React from "react";
 
 import Dropzone from "./dropzone";
-import { SourceMapType } from "../types";
-import SourceMap from "./sourcemap";
-import Visualizer from "./visualizer";
+import { SourceMapType } from "~/types";
+import SourceMap from "~/components/sourcemap";
+import Visualizer from "~/components/visualizer";
 
 export default function App() {
   let [sourcemapContent, setSourcemapContent] = React.useState<
