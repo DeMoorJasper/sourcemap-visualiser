@@ -29,7 +29,7 @@ export default function App() {
     return <Visualizer sourcemapContent={sourcemapContent} />;
   } else {
     return (
-      <div className="max-w-xl mx-auto p-16">
+      <div className="max-w-xl mx-auto p-16 font-sans leading-normal">
         <div className="font-medium text-lg text-gray-700">
           Upload your <span className="underline">sourcemap-info.json</span> to
           get started

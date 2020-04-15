@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Parts of preflight that are actually needed: */
+#sourcemap-visualizer *,
+#sourcemap-visualizer ::before,
+#sourcemap-visualizer ::after {
+  box-sizing: border-box;
+}
+
+#sourcemap-visualizer select {
+	font-size: 100%;
+}
