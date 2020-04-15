@@ -13,10 +13,11 @@ export default function Visualizer({ sourcemapContent }: Props) {
     let selectedSourceMap = sourcemapContent[selectedSourceMapIndex];
 
     return (
-      <div className="h-screen">
+      <div id="sourcemap-visualizer" className="h-screen font-sans leading-normal">
         <div className="bg-gray-700 p-2 flex">
           <div className="text-white mr-4">Select Bundle</div>
           <select
+            className="border-none"
             onChange={(e) => {
               setSelectedSourceMapIndex(parseInt(e.target.value, 10));
             }}
