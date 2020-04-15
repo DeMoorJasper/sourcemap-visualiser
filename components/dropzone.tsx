@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import classNames from "classnames";
 
 export type Props = {
@@ -8,8 +8,8 @@ export type Props = {
 
 export default function Dropzone(props: Props) {
   let { onUpload, disabled } = props;
-  let [ref, setRef] = React.useState<HTMLInputElement | null>(null);
-  let [dragging, setDragging] = React.useState<boolean>(false);
+  let inputEl = useRef<HTMLInputElement | null>();
+  let [dragging, setDragging] = useState<boolean>(false);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (disabled) return;
@@ -25,9 +25,9 @@ export default function Dropzone(props: Props) {
   const handleClick = () => {
     if (disabled) return;
 
-    if (ref) {
+    if (inputEl.current) {
       // @ts-ignore
-      ref.dispatchEvent(new MouseEvent("click"));
+      inputEl.current.dispatchEvent(new MouseEvent("click"));
     }
   };
 
@@ -89,7 +89,7 @@ export default function Dropzone(props: Props) {
         accept="application/json"
         onChange={handleFileUpload}
         className="hidden"
-        ref={(r) => setRef(r)}
+        ref={inputEl}
       ></input>
     </div>
   );
