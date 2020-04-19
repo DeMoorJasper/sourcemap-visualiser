@@ -98,6 +98,9 @@ export default function SourcePreview(props: Props) {
 
     let m = mappings[selectedMapping];
     let nextMapping = mappings[selectedMapping + 1];
+    if (nextMapping && nextMapping.generatedLine !== m.generatedLine) {
+      nextMapping = null;
+    }
     let parts = ["", "", ""];
     let lines = generated.split("\n");
     let currChar = 0;

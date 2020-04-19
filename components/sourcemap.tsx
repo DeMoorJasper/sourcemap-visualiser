@@ -44,19 +44,19 @@ export default function SourceMap(props: Props) {
     [selectedSourceIndex]
   );
 
-  React.useEffect(() => {
+  const changeSourceIndex = (i: number) => {
     setSelectedMapping(-1);
     setHoveredMapping(-1);
-  }, [selectedSourceIndex]);
+    setSelectedSourceIndex(i);
+  };
 
   let selectedSource = sourcemap.sources[selectedSourceIndex];
-
   return (
     <div className="h-full flex">
       <div className="w-1/6">
         <SourceSelector
           selectedSource={selectedSourceIndex}
-          onSelect={setSelectedSourceIndex}
+          onSelect={changeSourceIndex}
           sources={sourcemap.sources}
         />
       </div>
