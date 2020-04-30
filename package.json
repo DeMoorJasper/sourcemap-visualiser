@@ -8,7 +8,7 @@
   "scripts": {
     "start": "parcel website/index.html",
     "build": "parcel build website/index.html --target app",
-    "build-lib": "parcel build components/visualizer.tsx --target module && parcel build style.css --target style "
+    "build-lib": "parcel build components/visualizer.tsx --target module && parcel build style.css --target style"
   },
   "targets": {
     "app": {},
@@ -28,11 +28,11 @@
   },
   "devDependencies": {
     "autoprefixer": "^9.7.6",
-    "core-js": "^3.6.4",
-    "parcel": "^2.0.0-nightly.217",
+    "core-js": "^3.6.5",
+    "parcel": "^2.0.0-nightly.237",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "regenerator-runtime": "^0.13.5",
-    "tailwindcss": "^1.2.0"
+    "tailwindcss": "^1.4.0"
   }
 }
