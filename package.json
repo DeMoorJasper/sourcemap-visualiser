@@ -29,7 +29,8 @@
   "devDependencies": {
     "autoprefixer": "^9.7.6",
     "core-js": "^3.6.5",
-    "parcel": "^2.0.0-nightly.237",
+    "parcel": "^2.0.0-nightly.438",
+    "postcss": "^8.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "regenerator-runtime": "^0.13.5",
