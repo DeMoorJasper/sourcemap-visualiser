@@ -56,7 +56,7 @@ export default function SourceMap(props: Props) {
 
   let selectedSource = sourcemap.sources[selectedSourceIndex];
   return (
-    <div className="h-full flex">
+    <div className="h-full min-h-0 flex">
       <div className="w-1/6">
         <SourceSelector selectedSource={selectedSourceIndex} onSelect={changeSourceIndex} sources={sourcemap.sources} />
       </div>

@@ -23,7 +23,11 @@ export default function App() {
   };
 
   if (sourcemapContent.length) {
-    return <Visualizer sourcemapContent={sourcemapContent} />;
+    return (
+      <div className="h-screen">
+        <Visualizer sourcemapContent={sourcemapContent} />
+      </div>
+    );
   } else {
     return (
       <div className="max-w-xl mx-auto p-16 font-sans leading-normal">
