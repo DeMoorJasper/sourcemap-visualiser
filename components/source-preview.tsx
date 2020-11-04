@@ -99,7 +99,7 @@ export default function SourcePreview(props: Props) {
     for (let c of lines[m.generatedLine]) {
       if (currChar < m.generatedColumn) {
         parts[0] += c;
-      } else if (nextMapping && currChar > nextMapping.generatedColumn) {
+      } else if (nextMapping && currChar >= nextMapping.generatedColumn) {
         parts[2] += c;
       } else {
         parts[1] += c;
