@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { SourceMapType } from '../types';
-import { decodeMap } from '../utils/decode-map';
+import { DecodedMapping, decodeMap } from '../utils/decode-map';
 import MappingTree from './mapping-tree';
 import SourcePreview from './source-preview';
 import SourceSelector from './source-selector';
@@ -24,6 +24,17 @@ export default function SourceMap(props: Props) {
   let decodedMappings = React.useMemo(() => {
     return decodeMap(sourcemap.mappings, sourcemap.names);
   }, [sourcemap.mappings]);
+
+  let mappingsSortedByGenerated: Array<DecodedMapping> = React.useMemo(() => {
+    return decodedMappings.sort((a, b) => {
+      let lineDiff = a.generatedLine - b.generatedLine;
+      if (lineDiff === 0) {
+        return a.generatedColumn - b.generatedColumn;
+      } else {
+        return lineDiff;
+      }
+    });
+  }, [decodedMappings]);
 
   let filteredMappings = React.useMemo(() => {
     return decodedMappings
@@ -54,6 +65,7 @@ export default function SourceMap(props: Props) {
           <SourcePreview
             source={selectedSource}
             mappings={filteredMappings}
+            allMappings={mappingsSortedByGenerated}
             hoveredMapping={hoveredMapping}
             onHoverMapping={setHoveredMapping}
             selectedMapping={selectedMapping}

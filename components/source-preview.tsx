@@ -11,6 +11,7 @@ import { DecodedMapping } from '../utils/decode-map';
 export type Props = {
   source: SourceType;
   mappings: Array<DecodedMapping>;
+  allMappings: Array<DecodedMapping>;
   hoveredMapping: number;
   onHoverMapping: (mappingIndex: number) => any;
   selectedMapping: number;
@@ -23,7 +24,16 @@ const getRandomColor = (lastMappingColor: number) => {
 };
 
 export default function SourcePreview(props: Props) {
-  let { source, mappings, hoveredMapping, onHoverMapping, selectedMapping, onSelectMapping, generated } = props;
+  let {
+    source,
+    mappings,
+    allMappings,
+    hoveredMapping,
+    onHoverMapping,
+    selectedMapping,
+    onSelectMapping,
+    generated,
+  } = props;
 
   let renderableMappings = React.useMemo(() => {
     let result = [[]];
@@ -89,30 +99,27 @@ export default function SourcePreview(props: Props) {
     }
 
     let m = mappings[selectedMapping];
-    let nextMapping = mappings[selectedMapping + 1];
-    if (nextMapping && nextMapping.generatedLine !== m.generatedLine) {
-      nextMapping = null;
-    }
-    let parts = ['', '', ''];
-    let lines = generated.split('\n');
-    let currChar = 0;
-    for (let c of lines[m.generatedLine]) {
-      if (currChar < m.generatedColumn) {
-        parts[0] += c;
-      } else if (nextMapping && currChar >= nextMapping.generatedColumn) {
-        parts[2] += c;
-      } else {
-        parts[1] += c;
-      }
+    let mappingIndex = allMappings.findIndex(
+      (val) => val.generatedColumn === m.generatedColumn && val.generatedLine === m.generatedLine
+    );
 
-      currChar++;
+    let nextMapping = allMappings[mappingIndex + 1];
+    let lines = generated.split('\n');
+    let line = lines[m.generatedLine];
+    let startColumn = m.generatedColumn;
+    let endColumn = nextMapping?.generatedLine === m.generatedLine ? nextMapping.generatedColumn - 1 : line.length;
+
+    let firstPart = '';
+    if (startColumn > 0) {
+      let startIndex = startColumn > 10 ? startColumn - 10 : 0;
+      firstPart = line.substring(startIndex, startColumn - 1);
     }
 
     return {
       line: m.originalLine,
-      parts: [parts[0].slice(-20), parts[1], parts[2].slice(0, 20)],
+      parts: [firstPart, line.substring(startColumn, endColumn), line.substring(endColumn + 1, endColumn + 10)],
     };
-  }, [selectedMapping]);
+  }, [selectedMapping, allMappings]);
 
   let lines = source.content.split('\n');
   let lineNumberWidth = lines.length.toString(10).length + 1;
