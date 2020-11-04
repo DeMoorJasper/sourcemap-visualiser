@@ -8,7 +8,24 @@
   "scripts": {
     "start": "parcel website/index.html",
     "build": "parcel build website/index.html --target app",
+    "format": "prettier --write \"./**/*.{ts,tsx,js,jsx,json,md,mdx,css,scss}\"",
     "build-lib": "parcel build components/visualizer.tsx --target module && parcel build style.css --target style"
+  },
+  "importSort": {
+    ".js, .jsx, .ts, .tsx": {
+      "style": "module",
+      "parser": "typescript"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,md,mdx,css,scss}": [
+      "prettier --write"
+    ]
   },
   "targets": {
     "app": {},
@@ -34,6 +51,9 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "regenerator-runtime": "^0.13.5",
-    "tailwindcss": "^1.4.0"
+    "tailwindcss": "^1.4.0",
+    "prettier": "^2.1.2",
+    "import-sort-style-module": "^6.0.0",
+    "prettier-plugin-import-sort": "^0.0.6"
   }
 }

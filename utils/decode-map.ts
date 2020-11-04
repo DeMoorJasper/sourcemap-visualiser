@@ -1,4 +1,4 @@
-import { decode } from "sourcemap-codec";
+import { decode } from 'sourcemap-codec';
 
 export type DecodedMapping = {
   generatedLine: number;
@@ -9,10 +9,7 @@ export type DecodedMapping = {
   name?: string;
 };
 
-export function decodeMap(
-  mappings: string,
-  names: Array<string>
-): Array<DecodedMapping> {
+export function decodeMap(mappings: string, names: Array<string>): Array<DecodedMapping> {
   let decoded = decode(mappings);
 
   let currentLine = 0;

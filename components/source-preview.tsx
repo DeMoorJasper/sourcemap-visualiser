@@ -1,12 +1,12 @@
-import React from "react";
-import classNames from "classnames";
+import classNames from 'classnames';
+import color from 'color';
 // @ts-ignore
-import colors from "nice-color-palettes/1000";
-import color from "color";
+import colors from 'nice-color-palettes/1000';
+import React from 'react';
 
-import { SourceType } from "../types";
-import { DecodedMapping } from "../utils/decode-map";
-import { invertColor } from "../utils/color";
+import { SourceType } from '../types';
+import { invertColor } from '../utils/color';
+import { DecodedMapping } from '../utils/decode-map';
 
 export type Props = {
   source: SourceType;
@@ -18,33 +18,29 @@ export type Props = {
   generated: string;
 };
 
+const getRandomColor = (lastMappingColor: number) => {
+  return colors[lastMappingColor % 5000][lastMappingColor % 5];
+};
+
 export default function SourcePreview(props: Props) {
-  let {
-    source,
-    mappings,
-    hoveredMapping,
-    onHoverMapping,
-    selectedMapping,
-    onSelectMapping,
-    generated,
-  } = props;
+  let { source, mappings, hoveredMapping, onHoverMapping, selectedMapping, onSelectMapping, generated } = props;
 
   let renderableMappings = React.useMemo(() => {
     let result = [[]];
     let currColumn = 0;
     let currValue = {
-      value: "",
+      value: '',
       mapping: null,
       mappingIndex: -1,
     };
     let i = 0;
     for (let char of source.content) {
       let currLine = result.length - 1;
-      if (char === "\n") {
+      if (char === '\n') {
         if (currValue.value) {
           result[currLine].push(currValue);
           currValue = {
-            value: "",
+            value: '',
             mapping: null,
             mappingIndex: -1,
           };
@@ -56,16 +52,14 @@ export default function SourcePreview(props: Props) {
       }
 
       let currMapping = mappings[i];
-      if (
-        currMapping.originalLine === currLine &&
-        currMapping.originalColumn === currColumn
-      ) {
+      if (currMapping.originalLine === currLine && currMapping.originalColumn === currColumn) {
+        console.log(currMapping);
         if (currValue.value) {
           result[currLine].push(currValue);
         }
 
         currValue = {
-          value: "",
+          value: '',
           mapping: currMapping,
           mappingIndex: i,
         };
@@ -74,10 +68,8 @@ export default function SourcePreview(props: Props) {
       while (
         i < mappings.length - 1 &&
         (currMapping.originalLine < currLine ||
-          (currMapping.originalLine === currLine &&
-            currMapping.originalColumn < currColumn) ||
-          (currMapping.originalLine === currLine &&
-            currMapping.originalColumn === currColumn))
+          (currMapping.originalLine === currLine && currMapping.originalColumn < currColumn) ||
+          (currMapping.originalLine === currLine && currMapping.originalColumn === currColumn))
       ) {
         i++;
         currMapping = mappings[i];
@@ -101,8 +93,8 @@ export default function SourcePreview(props: Props) {
     if (nextMapping && nextMapping.generatedLine !== m.generatedLine) {
       nextMapping = null;
     }
-    let parts = ["", "", ""];
-    let lines = generated.split("\n");
+    let parts = ['', '', ''];
+    let lines = generated.split('\n');
     let currChar = 0;
     for (let c of lines[m.generatedLine]) {
       if (currChar < m.generatedColumn) {
@@ -122,7 +114,7 @@ export default function SourcePreview(props: Props) {
     };
   }, [selectedMapping]);
 
-  let lines = source.content.split("\n");
+  let lines = source.content.split('\n');
   let lineNumberWidth = lines.length.toString(10).length + 1;
   let lastMappingColor = 0;
   return (
@@ -131,28 +123,22 @@ export default function SourcePreview(props: Props) {
         return (
           <React.Fragment key={`line-${i}`}>
             <div className="flex flex-row">
-              <div
-                className="text-right px-2 bg-gray-200"
-                style={{ width: `${lineNumberWidth}rem` }}
-              >
+              <div className="text-right px-2 bg-gray-200" style={{ width: `${lineNumberWidth}rem` }}>
                 {i}
               </div>
               <div className="px-4 whitespace-pre">
                 {m.map((map, x) => {
                   let style: any = {};
                   if (map.mapping) {
-                    style.backgroundColor =
-                      colors[lastMappingColor % 5000][lastMappingColor % 5];
+                    style.backgroundColor = getRandomColor(lastMappingColor);
                     style.color = invertColor(style.backgroundColor);
 
                     if (map.mappingIndex > -1) {
                       if (selectedMapping === map.mappingIndex) {
-                        style.backgroundColor = "#000000";
-                        style.color = "#ffffff";
+                        style.backgroundColor = '#000000';
+                        style.color = '#ffffff';
                       } else if (hoveredMapping === map.mappingIndex) {
-                        style.backgroundColor = color(
-                          style.backgroundColor
-                        ).darken(0.25);
+                        style.backgroundColor = color(style.backgroundColor).darken(0.25);
                       }
                     }
 
@@ -162,9 +148,9 @@ export default function SourcePreview(props: Props) {
                   return (
                     <span
                       key={`line-${i}-mapping-${x}`}
-                      className={classNames("rounded", {
-                        "cursor-pointer": !!map.mapping,
-                        "text-gray-600": !map.mapping,
+                      className={classNames('rounded', {
+                        'cursor-pointer': !!map.mapping,
+                        'text-gray-600': !map.mapping,
                       })}
                       style={style}
                       onMouseEnter={() => {
@@ -187,25 +173,16 @@ export default function SourcePreview(props: Props) {
             </div>
             {generatedFragment && generatedFragment.line === i && (
               <div className="p-2">
-                <span className="text-gray-500">
-                  {generatedFragment.parts[0]}
-                </span>
-                <span className="bg-black text-white">
-                  {generatedFragment.parts[1] || '[NOT FOUND]'}
-                </span>
-                <span className="text-gray-500">
-                  {generatedFragment.parts[2]}
-                </span>
+                <span className="text-gray-500">{generatedFragment.parts[0]}</span>
+                <span className="bg-black text-white">{generatedFragment.parts[1] || '[NOT FOUND]'}</span>
+                <span className="text-gray-500">{generatedFragment.parts[2]}</span>
               </div>
             )}
           </React.Fragment>
         );
       })}
       <div className="flex flex-row h-full">
-        <div
-          className="flex px-2 bg-gray-200"
-          style={{ width: `${lineNumberWidth}rem` }}
-        />
+        <div className="flex px-2 bg-gray-200" style={{ width: `${lineNumberWidth}rem` }} />
         <div />
       </div>
     </div>

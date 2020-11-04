@@ -1,5 +1,5 @@
-import React, { useRef, useState } from "react";
-import classNames from "classnames";
+import classNames from 'classnames';
+import React, { useRef, useState } from 'react';
 
 export type Props = {
   onUpload: (file: File) => any;
@@ -27,7 +27,7 @@ export default function Dropzone(props: Props) {
 
     if (inputEl.current) {
       // @ts-ignore
-      inputEl.current.dispatchEvent(new MouseEvent("click"));
+      inputEl.current.dispatchEvent(new MouseEvent('click'));
     }
   };
 
@@ -65,13 +65,10 @@ export default function Dropzone(props: Props) {
 
   return (
     <div
-      className={classNames(
-        "w-full border-dashed border-gray-400 text-gray-400 border-2 rounded",
-        {
-          "cursor-pointer hover:border-gray-500": !disabled,
-          "border-gray-500": dragging,
-        }
-      )}
+      className={classNames('w-full border-dashed border-gray-400 text-gray-400 border-2 rounded', {
+        'cursor-pointer hover:border-gray-500': !disabled,
+        'border-gray-500': dragging,
+      })}
       onClick={handleClick}
     >
       <div

@@ -1,6 +1,7 @@
-import React from "react";
-import { SourceMapType } from "../types";
-import SourceMap from "./sourcemap";
+import React from 'react';
+
+import { SourceMapType } from '../types';
+import SourceMap from './sourcemap';
 
 export type Props = {
   sourcemapContent: Array<SourceMapType>;
