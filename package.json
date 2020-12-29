@@ -37,7 +37,7 @@
   "dependencies": {
     "classnames": "^2.2.6",
     "color": "^3.1.2",
-    "nice-color-palettes": "^3.0.0",
+    "randomcolor": "^0.6.2",
     "sourcemap-codec": "^1.4.8"
   },
   "peerDependencies": {
@@ -46,14 +46,14 @@
   "devDependencies": {
     "autoprefixer": "^9.7.6",
     "core-js": "^3.6.5",
-    "parcel": "^2.0.0-nightly.438",
+    "import-sort-style-module": "^6.0.0",
+    "parcel": "^2.0.0-nightly.492",
     "postcss": "^8.0.0",
+    "prettier": "^2.1.2",
+    "prettier-plugin-import-sort": "^0.0.6",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "regenerator-runtime": "^0.13.5",
-    "tailwindcss": "^1.4.0",
-    "prettier": "^2.1.2",
-    "import-sort-style-module": "^6.0.0",
-    "prettier-plugin-import-sort": "^0.0.6"
+    "tailwindcss": "^1.4.0"
   }
 }

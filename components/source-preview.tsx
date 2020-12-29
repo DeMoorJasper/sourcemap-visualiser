@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import color from 'color';
-// @ts-ignore
-import colors from 'nice-color-palettes/1000';
+import randomcolor from 'randomcolor';
 import React from 'react';
 
 import { SourceType } from '../types';
@@ -19,8 +18,15 @@ export type Props = {
   generated: string;
 };
 
-const getRandomColor = (lastMappingColor: number) => {
-  return colors[lastMappingColor % 5000][lastMappingColor % 5];
+const getRandomColor = (...seedValues: Array<number>) => {
+  let seed = 1000;
+  for (let seedValue of seedValues) {
+    seed += seedValue * 1000;
+  }
+
+  return randomcolor({
+    seed,
+  });
 };
 
 export default function SourcePreview(props: Props) {
@@ -63,7 +69,6 @@ export default function SourcePreview(props: Props) {
 
       let currMapping = mappings[i];
       if (currMapping.originalLine === currLine && currMapping.originalColumn === currColumn) {
-        console.log(currMapping);
         if (currValue.value) {
           result[currLine].push(currValue);
         }
@@ -99,6 +104,10 @@ export default function SourcePreview(props: Props) {
     }
 
     let m = mappings[selectedMapping];
+    if (!m) {
+      return null;
+    }
+
     let mappingIndex = allMappings.findIndex(
       (val) => val.generatedColumn === m.generatedColumn && val.generatedLine === m.generatedLine
     );
@@ -108,6 +117,10 @@ export default function SourcePreview(props: Props) {
     let line = lines[m.generatedLine];
     let startColumn = m.generatedColumn;
     let endColumn = nextMapping?.generatedLine === m.generatedLine ? nextMapping.generatedColumn : line.length;
+
+    if (!line.length) {
+      return null;
+    }
 
     return {
       line: m.originalLine,
@@ -121,7 +134,6 @@ export default function SourcePreview(props: Props) {
 
   let lines = source.content.split('\n');
   let lineNumberWidth = lines.length.toString(10).length + 1;
-  let lastMappingColor = 0;
   return (
     <div className="w-full h-full flex flex-col font-mono text-sm">
       {renderableMappings.map((m, i) => {
@@ -135,7 +147,7 @@ export default function SourcePreview(props: Props) {
                 {m.map((map, x) => {
                   let style: any = {};
                   if (map.mapping) {
-                    style.backgroundColor = getRandomColor(lastMappingColor);
+                    style.backgroundColor = getRandomColor(i, x);
                     style.color = invertColor(style.backgroundColor);
 
                     if (map.mappingIndex > -1) {
@@ -146,8 +158,6 @@ export default function SourcePreview(props: Props) {
                         style.backgroundColor = color(style.backgroundColor).darken(0.25);
                       }
                     }
-
-                    lastMappingColor++;
                   }
 
                   return (
@@ -176,7 +186,7 @@ export default function SourcePreview(props: Props) {
                 })}
               </div>
             </div>
-            {generatedFragment && generatedFragment.line === i && (
+            {generatedFragment?.line === i && (
               <div className="p-2">
                 <span className="text-gray-500">{generatedFragment.parts[0]}</span>
                 <span className="bg-black text-white">{generatedFragment.parts[1] || '[NOT FOUND]'}</span>
