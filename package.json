@@ -48,7 +48,7 @@
     "core-js": "^3.6.5",
     "import-sort-style-module": "^6.0.0",
     "parcel": "^2.0.0-nightly.492",
-    "postcss": "^8.0.0",
+    "postcss": "^8.2.10",
     "prettier": "^2.1.2",
     "prettier-plugin-import-sort": "^0.0.6",
     "react": "^16.13.1",
